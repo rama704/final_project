@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Appointment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'doctor_id',
+        'patient_id',
+        'appointment_date',
+        'appointment_time',
+        'status',
+        'patient_name',
+        'patient_email',
+        'patient_phone',
+        'patient_age',
+        'service_type',
+        'payment_method',
+        'notes',
+        'cancellation_reason',
+        'confirmed_at',
+        'completed_at',
+        'cancelled_at'
+    ];
+
+    protected $casts = [
+        'appointment_date' => 'date',
+        'confirmed_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+    ];
+
+    // العلاقات
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+
+    public function patient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'patient_id');
+    }
+
+    // نطاقات الاستعلام (Scopes)
+    public function scopeUpcoming($query)
+    {
+        return $query->where('appointment_date', '>=', now()->toDateString())
+                    ->whereIn('status', ['pending', 'confirmed'])
+                     ->orderBy('appointment_date')
+                     ->orderBy('appointment_time');
+    }
+
+    public function scopePast($query)
+    {
+        return $query->where('appointment_date', '<', now()->toDateString())
+                     ->orWhere(function ($q) {
+                         $q->where('appointment_date', now()->toDateString())
+                           ->where('appointment_time', '<', now()->format('H:i:s'));
+                     })
+                     ->orderBy('appointment_date', 'desc')
+                     ->orderBy('appointment_time', 'desc');
+    }
+
+    public function scopeForDoctor($query, $doctorId)
+    {
+        return $query->where('doctor_id', $doctorId);
+    }
+
+    public function scopeForPatient($query, $patientId)
+    {
+        return $query->where('patient_id', $patientId);
+    }
+
+    // التواريخ والتوقيتات
+    public function getFormattedDateAttribute()
+    {
+        return $this->appointment_date->format('F d, Y');
+    }
+
+    public function getFormattedTimeAttribute()
+    {
+        return date('h:i A', strtotime($this->appointment_time));
+    }
+
+    public function getDateTimeAttribute()
+    {
+        return $this->appointment_date->format('Y-m-d') . ' ' . $this->appointment_time;
+    }
+
+    // التحقق من الحالة
+    public function isUpcoming()
+    {
+        return $this->status === 'booked' && $this->appointment_date >= now()->toDateString();
+    }
+
+    public function canBeCancelled()
+    {
+        // يمكن إلغاء الموعد قبل 24 ساعة على الأقل
+        $appointmentDateTime = \Carbon\Carbon::parse($this->DateTimeAttribute);
+        return $this->status === 'booked' && now()->diffInHours($appointmentDateTime) > 24;
+    }
+}
