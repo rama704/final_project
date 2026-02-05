@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware; // <-- أضف هذا الاستيراد
+use App\Http\Middleware\RoleMiddleware; // <-- أضف هذا الاستيراد
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // سجّل الـ middleware المخصص هنا
         $middleware->alias([
             'admin' => AdminMiddleware::class, // <-- هذا السطر مهم
+            'role' => RoleMiddleware::class, // <-- هذا السطر مهم
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

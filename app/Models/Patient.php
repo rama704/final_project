@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Appointment;
+
 class Patient extends Model
 {
     use HasFactory;
@@ -31,19 +32,28 @@ class Patient extends Model
         'last_dental_visit' => 'date',
     ];
 
-    // حساب العمر تلقائيًا
+    /**
+     * حساب العمر تلقائيًا
+     */
     public function getAgeAttribute()
     {
         return $this->date_of_birth ? Carbon::parse($this->date_of_birth)->age : null;
     }
 
-    // العلاقة مع المواعيد
+    /**
+     * العلاقة مع المواعيد
+     */
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
     }
-   public function user()
-{
-    return $this->belongsTo(User::class)->whereNotNull('id');
-}
+
+    /**
+     * العلاقة مع الـ User
+     * كل Patient مرتبط بمستخدم واحد
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Appointment extends Model
@@ -11,6 +12,7 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'clinic_id',
         'doctor_id',
         'patient_id',
         'appointment_date',
@@ -31,12 +33,20 @@ class Appointment extends Model
 
     protected $casts = [
         'appointment_date' => 'date',
+        'appointment_time' => 'datetime:H:i',
         'confirmed_at' => 'datetime',
         'completed_at' => 'datetime',
         'cancelled_at' => 'datetime',
     ];
 
+    // ------------------------------
     // العلاقات
+    // ------------------------------
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
@@ -44,14 +54,16 @@ class Appointment extends Model
 
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'patient_id');
+        return $this->belongsTo(Patient::class);
     }
 
-    // نطاقات الاستعلام (Scopes)
+    // ------------------------------
+    // Scopes للاستعلامات
+    // ------------------------------
     public function scopeUpcoming($query)
     {
         return $query->where('appointment_date', '>=', now()->toDateString())
-                    ->whereIn('status', ['pending', 'confirmed'])
+                     ->whereIn('status', ['pending', 'confirmed'])
                      ->orderBy('appointment_date')
                      ->orderBy('appointment_time');
     }
@@ -77,7 +89,9 @@ class Appointment extends Model
         return $query->where('patient_id', $patientId);
     }
 
-    // التواريخ والتوقيتات
+    // ------------------------------
+    // دوال مساعدة
+    // ------------------------------
     public function getFormattedDateAttribute()
     {
         return $this->appointment_date->format('F d, Y');
@@ -93,16 +107,16 @@ class Appointment extends Model
         return $this->appointment_date->format('Y-m-d') . ' ' . $this->appointment_time;
     }
 
-    // التحقق من الحالة
     public function isUpcoming()
     {
-        return $this->status === 'booked' && $this->appointment_date >= now()->toDateString();
+        return in_array($this->status, ['pending', 'confirmed']) &&
+               $this->appointment_date >= now()->toDateString();
     }
 
     public function canBeCancelled()
     {
-        // يمكن إلغاء الموعد قبل 24 ساعة على الأقل
-        $appointmentDateTime = \Carbon\Carbon::parse($this->DateTimeAttribute);
-        return $this->status === 'booked' && now()->diffInHours($appointmentDateTime) > 24;
+        $appointmentDateTime = Carbon::parse($this->DateTimeAttribute);
+        return in_array($this->status, ['pending', 'confirmed']) &&
+               now()->diffInHours($appointmentDateTime) > 24;
     }
 }

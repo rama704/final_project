@@ -22,17 +22,13 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // تحقق من اليوزر
-        if (Auth::attempt($credentials)) {
+        // 👇 انتبه: تمرير remember
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
 
-            $request->session()->regenerate(); // حماية الجلسة
+            $request->session()->regenerate();
 
-            // تحقق إذا كان الأدمن
-            if (auth()->user()->is_admin) {
-                return redirect()->intended('/admin/dashboard');
-            }
-
-return redirect()->route('index');
+            // ✅ لا داعي لكل شروط الدور
+            return redirect()->route('dashboard');
         }
 
         // فشل تسجيل الدخول
@@ -49,6 +45,6 @@ return redirect()->route('index');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login');
     }
 }

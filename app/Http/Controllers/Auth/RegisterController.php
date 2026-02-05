@@ -34,10 +34,9 @@ class RegisterController extends Controller
 
         // إنشاء Patient تلقائيًا
         Patient::create([
-            'user_id'   => $user->id,
-            'email'     => $user->email,
-            'full_name' => $user->name,
-        ]);
+    'user_id'   => $user->id,
+    'gender'    => null, // أو أي قيمة مناسبة
+]);
 
         // استخدم Auth facade بدلاً من auth()
         Auth::login($user); // ← هذا هو التغيير الرئيسي

@@ -9,31 +9,35 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doctors', function (Blueprint $table) {
-            $table->id();
+    $table->id();
 
-            // Basic Information
-            $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->string('specialty'); // التخصص
-            $table->text('bio')->nullable(); // نبذة عن الدكتور
-            $table->integer('years_of_experience')->nullable(); // سنوات الخبرة
-            
-            // الصور
-            $table->string('image')->nullable(); // مسار صورة البروفايل
-            $table->json('gallery')->nullable(); // معرض صور (اختياري)
+    $table->foreignId('user_id')
+          ->constrained('users')
+          ->cascadeOnDelete();
 
-            // معلومات إضافية
-            $table->json('education')->nullable(); // المؤهلات العلمية
-            $table->json('skills')->nullable(); // المهارات
-            $table->string('license_number')->nullable(); // رقم الرخصة الطبية
-            $table->string('university')->nullable(); // الجامعة
-            $table->string('available_days')->nullable(); // أيام العمل
-            $table->time('available_from')->nullable(); // وقت العمل من
-            $table->time('available_to')->nullable(); // وقت العمل إلى
+    $table->foreignId('clinic_id')
+          ->constrained('clinics')
+          ->cascadeOnDelete();
 
-            $table->timestamps();
-        });
+    $table->string('specialty');
+    $table->text('bio')->nullable();
+    $table->integer('years_of_experience')->nullable();
+
+    $table->string('image')->nullable();
+    $table->json('gallery')->nullable();
+
+    $table->json('education')->nullable();
+    $table->json('skills')->nullable();
+
+    $table->string('license_number')->nullable();
+    $table->string('university')->nullable();
+
+    $table->json('available_days')->nullable();
+    $table->time('available_from')->nullable();
+    $table->time('available_to')->nullable();
+
+    $table->timestamps();
+});
     }
 
     public function down(): void

@@ -9,12 +9,17 @@ class PatientProfileController extends Controller
 {
     // عرض الملف الشخصي للمريض الحالي (المسجل دخوله)
     public function show()
-    {
-        // الحصول على المريض المرتبط بالمستخدم الحالي
-        $patient = Patient::where('user_id', auth()->id())->firstOrFail();
-
-        return view('patients.profile', compact('patient'));
+{
+    if (!auth()->check()) {
+        return redirect()->route('login'); // أو رابط صفحة تسجيل الدخول عندك
     }
+
+    // الحصول على المريض المرتبط بالمستخدم الحالي
+    $patient = Patient::where('user_id', auth()->id())->firstOrFail();
+
+    return view('patients.profile', compact('patient'));
+}
+
 
     // تعديل الملف الشخصي للمريض الحالي
     public function edit()
