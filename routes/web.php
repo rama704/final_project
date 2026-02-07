@@ -50,9 +50,25 @@ Route::get('/doctors/{id}', [DoctorController::class, 'show'])->name('doctors.sh
 // Dashboard (Admin + Doctor)
 // ========================
 
-Route::middleware(['auth', 'role:admin,doctor'])
-    ->get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+// Admin Dashboard
+// Admin
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('patients', AdminPatientController::class);
+    });
+
+// Doctor
+Route::middleware(['auth', 'role:doctor'])
+    ->prefix('doctor')
+    ->name('doctor.')
+    ->group(function () {
+            Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
+        Route::resource('patients', PatientController::class);
+    });
+
 
 
 // ========================
@@ -109,16 +125,16 @@ Route::middleware('auth')->prefix('patient')->name('patients.')->group(function 
 // Admin Routes (Admin فقط)
 // ========================
 
-Route::middleware(['auth', 'role:admin'])
+Route::middleware(['auth', 'role:admin']) // ← غيرت من role:admin,doctor إلى role:admin فقط
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::resource('doctors', AdminDoctorController::class);
         Route::resource('patients', AdminPatientController::class);
+        Route::resource('doctors', AdminDoctorController::class); // ← داير هذا على Admin فقط
         Route::resource('appointments', AdminAppointmentController::class);
         Route::resource('users', AdminUserController::class);
-});
+    });
 
 
 // ========================

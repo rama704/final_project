@@ -1,6 +1,11 @@
-@extends('admin.layouts.admin')
+@extends(auth()->user()->role == 'admin' ? 'admin.layouts.admin' : 'doctor.layouts.doctor')
 
 @section('content')
+
+@php
+    // تحديد الـ route prefix حسب الدور
+    $patientRoute = auth()->user()->role == 'admin' ? 'admin.patients' : 'doctor.patients';
+@endphp
 
 <!-- Page Header -->
 <div class="page-header">
@@ -14,9 +19,11 @@
     <p>Quick actions related to patients</p>
 
     <div style="display:flex; gap:15px; margin-top:20px; flex-wrap:wrap;">
-        <a href="{{ route('admin.patients.create') }}" class="btn btn-primary">+ Add Patient</a>
-        <button class="btn btn-secondary">Import Patients</button>
-        <button class="btn btn-secondary">Generate Report</button>
+        <a href="{{ route($patientRoute.'.create') }}" class="btn btn-primary">+ Add Patient</a>
+        @if(auth()->user()->role == 'admin')
+            <button class="btn btn-secondary">Import Patients</button>
+            <button class="btn btn-secondary">Generate Report</button>
+        @endif
         <button class="btn btn-secondary">Search</button>
     </div>
 </div>
@@ -39,9 +46,7 @@
             <tbody>
                 @foreach($patients as $patient)
                 <tr class="table-row">
-                    <td class="table-td">
-                        <strong>{{ $patient->full_name }}</strong>
-                    </td>
+                    <td class="table-td"><strong>{{ $patient->full_name }}</strong></td>
 
                     <td class="table-td">
                         <div>{{ $patient->email }}</div>
@@ -62,9 +67,9 @@
                     </td>
 
                     <td class="table-td">
-                        <a href="{{ route('admin.patients.edit', $patient) }}" class="action-link edit">Edit</a>
+                        <a href="{{ route($patientRoute.'.edit', $patient) }}" class="action-link edit">Edit</a>
 
-                        <form action="{{ route('admin.patients.destroy', $patient) }}" method="POST" style="display:inline;">
+                        <form action="{{ route($patientRoute.'.destroy', $patient) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button class="action-link delete"

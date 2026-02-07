@@ -81,8 +81,14 @@
         SmileCare
     </div>
     <nav>
-        <a href="{{ route('dashboard') }}" class="active">DASHBOARD</a>
-        <a href="{{ route('patients.index') }}">PATIENTS</a>
+@if($user->role === 'admin')
+    <a href="{{ route('admin.dashboard') }}" class="active">DASHBOARD</a>
+    <a href="{{ route('admin.patients.index') }}">PATIENTS</a>
+@elseif($user->role === 'doctor')
+    <a href="{{ route('doctor.dashboard') }}" class="active">DASHBOARD</a>
+    <a href="{{ route('doctor.patients.index') }}">PATIENTS</a>
+@endif
+
         @if($user->role == 'admin')
             <a href="{{ route('doctors.index') }}">DOCTORS</a>
             <a href="{{ route('appointments.index') }}">APPOINTMENTS</a>
@@ -146,7 +152,15 @@
     <div class="quick-actions">
         <h3 class="section-title">Quick Actions</h3>
         <div class="action-buttons">
-            <a href="{{ route('patients.create') }}" class="action-btn"><span>Add New Patient</span></a>
+@if($user->role === 'admin')
+    <a href="{{ route('admin.patients.create') }}" class="action-btn">
+        <span>Add New Patient</span>
+    </a>
+@elseif($user->role === 'doctor')
+    <a href="{{ route('doctor.patients.create') }}" class="action-btn">
+        <span>Add New Patient</span>
+    </a>
+@endif
             <a href="{{ route('appointments.create') }}" class="action-btn"><span>New Appointment</span></a>
             @if($user->role == 'admin')
                 <a href="{{ route('doctors.create') }}" class="action-btn"><span>Manage Doctors</span></a>
@@ -186,7 +200,7 @@
                     </li>
                 @endforeach
             </ul>
-            <a href="{{ route('patients.index') }}" class="view-all-btn">View All Patients →</a>
+            <a href="{{ route('admin.patients.index') }}" class="view-all-btn">View All Patients →</a>
         </div>
     </div>
 </div>

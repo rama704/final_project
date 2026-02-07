@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - SmileCare</title>
+    <title>SmileCare Admin</title>
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: #f5f7fa;
             color: #333;
             min-height: 100vh;
@@ -85,7 +85,7 @@
         }
 
         .admin-greeting {
-            text-align: left;
+            text-align: right;
             color: white;
         }
 
@@ -214,7 +214,7 @@
             font-size: 14px;
             transition: 0.2s ease;
             background: #fff;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .input:focus {
@@ -244,7 +244,7 @@
             cursor: pointer;
             transition: 0.25s;
             border: none;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .btn-secondary {
@@ -425,22 +425,27 @@
     </div>
 
     <nav>
-        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">لوحة التحكم</a>
-        <a href="{{ route('admin.patients.index') }}" class="{{ request()->routeIs('admin.patients.*') ? 'active' : '' }}">المرضى</a>
-        <a href="{{ route('admin.doctors.index') }}" class="{{ request()->routeIs('admin.doctors.*') ? 'active' : '' }}">الأطباء</a>
-        <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">المواعيد</a>
-        <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">المستخدمين</a>
+        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ route('admin.patients.index') }}" class="{{ request()->routeIs('admin.patients.*') ? 'active' : '' }}">Patients</a>
+        
+        {{-- Only show "Doctors" link if user is NOT a doctor --}}
+        @if(Auth::check() && !Auth::user()->hasRole('doctor'))
+            <a href="{{ route('admin.doctors.index') }}" class="{{ request()->routeIs('admin.doctors.*') ? 'active' : '' }}">Doctors</a>
+        @endif
+        
+        <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
+        <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Users</a>
     </nav>
 
     <div class="header-right">
         <div class="admin-greeting">
-            <div class="admin-role">لوحة الإدارة</div>
+            <div class="admin-role">Admin Panel</div>
             <div class="admin-name">{{ Auth::user()->name ?? 'Admin' }}</div>
         </div>
 
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="logout-btn">تسجيل الخروج</button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
 </header>

@@ -24,11 +24,19 @@ class LoginController extends Controller
 
         // 👇 انتبه: تمرير remember
         if (Auth::attempt($credentials, $request->filled('remember'))) {
-
             $request->session()->regenerate();
 
-            // ✅ لا داعي لكل شروط الدور
-            return redirect()->route('dashboard');
+            // ✅ توجيه المستخدم حسب الحقل role
+            $user = auth()->user();
+            
+            if ($user->role === 'super_admin' || $user->role === 'clinic_manager' || $user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'doctor') {
+                return redirect()->route('doctor.dashboard');
+            }
+
+            // fallback: إذا كان patient أو دور غير معروف
+            return redirect()->intended('/');
         }
 
         // فشل تسجيل الدخول

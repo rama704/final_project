@@ -230,138 +230,139 @@
             }
 
             /* Table */
-.table-th {
-    padding: 14px;
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #475569;
-}
+            .table-th {
+                padding: 14px;
+                font-size: 12px;
+                text-transform: uppercase;
+                color: #475569;
+            }
 
-.table-td {
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 14px;
-}
+            .table-td {
+                padding: 14px;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 14px;
+            }
 
-.table-row:hover {
-    background: #f9fafb;
-}
+            .table-row:hover {
+                background: #f9fafb;
+            }
 
-/* Badges */
-.badge {
-    padding: 4px 10px;
-    font-size: 11px;
-    border-radius: 12px;
-    margin-right: 5px;
-    display: inline-block;
-}
+            /* Badges */
+            .badge {
+                padding: 4px 10px;
+                font-size: 11px;
+                border-radius: 12px;
+                margin-right: 5px;
+                display: inline-block;
+            }
 
-.badge-danger {
-    background: #fee2e2;
-    color: #991b1b;
-}
+            .badge-danger {
+                background: #fee2e2;
+                color: #991b1b;
+            }
 
-.badge-warning {
-    background: #fef3c7;
-    color: #92400e;
-}
+            .badge-warning {
+                background: #fef3c7;
+                color: #92400e;
+            }
 
-/* Actions */
-.action-link {
-    font-size: 13px;
-    margin-right: 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
+            /* Actions */
+            .action-link {
+                font-size: 13px;
+                margin-right: 10px;
+                cursor: pointer;
+                background: none;
+                border: none;
+            }
 
-.action-link.edit {
-    color: #2563eb;
-}
+            .action-link.edit {
+                color: #2563eb;
+            }
 
-.action-link.delete {
-    color: #dc2626;
-}
+            .action-link.delete {
+                color: #dc2626;
+            }
 
-/* Details Page */
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-    margin-bottom: 35px;
-}
+            /* Details Page */
+            .details-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 20px;
+                margin-bottom: 35px;
+            }
 
-.details-box {
-    background: #f8fafc;
-    padding: 18px;
-    border-radius: 14px;
-}
+            .details-box {
+                background: #f8fafc;
+                padding: 18px;
+                border-radius: 14px;
+            }
 
-.details-box span {
-    font-size: 12px;
-    color: #6b7280;
-    display: block;
-    margin-bottom: 6px;
-}
+            .details-box span {
+                font-size: 12px;
+                color: #6b7280;
+                display: block;
+                margin-bottom: 6px;
+            }
 
-.details-box strong {
-    font-size: 15px;
-    color: #1f2937;
-}
+            .details-box strong {
+                font-size: 15px;
+                color: #1f2937;
+            }
 
-.details-section {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 25px;
-    margin-top: 25px;
-}
+            .details-section {
+                border-top: 1px solid #e5e7eb;
+                padding-top: 25px;
+                margin-top: 25px;
+            }
 
-.details-section h4 {
-    margin-bottom: 15px;
-    font-size: 16px;
-}
+            .details-section h4 {
+                margin-bottom: 15px;
+                font-size: 16px;
+            }
 
-/* Appointments */
-.appointments-list {
-    list-style: none;
-    padding: 0;
-}
+            /* Appointments */
+            .appointments-list {
+                list-style: none;
+                padding: 0;
+            }
 
-.appointments-list li {
-    padding: 12px 0;
-    border-bottom: 1px solid #e5e7eb;
-}
+            .appointments-list li {
+                padding: 12px 0;
+                border-bottom: 1px solid #e5e7eb;
+            }
 
-.view-all-btn {
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #3c8f8f;
-}
-   /* CSS بسيط للتأكد من عمل الصفحة */
-    .input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #d1d5db;
-        border-radius: 0.5rem;
-    }
-    
-    .btn {
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        display: inline-flex;
-        align-items: center;
-    }
-    
-    .btn-primary {
-        background: #3b82f6;
-        color: white;
-    }
-    
-    .btn-secondary {
-        background: #6b7280;
-        color: white;
-    }
+            .view-all-btn {
+                display: inline-block;
+                margin-top: 15px;
+                font-size: 14px;
+                color: #3c8f8f;
+            }
+        }
 
+        /* CSS بسيط للتأكد من عمل الصفحة */
+        .input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
     </style>
 </head>
 
@@ -377,10 +378,15 @@
     </div>
 
     <nav>
-        <a href="{{ route('admin.dashboard') }}" class="active">Dashboard</a>
-        <a href="{{ route('admin.patients.index') }}">Patients</a>
-        <a href="{{ route('admin.doctors.index') }}">Doctors</a>
-        <a href="{{ route('admin.appointments.index') }}">Appointments</a>
+        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ route('admin.patients.index') }}" class="{{ request()->routeIs('admin.patients.*') ? 'active' : '' }}">Patients</a>
+        
+        {{-- Only show "Doctors" link if user is NOT a doctor --}}
+        @if(Auth::check() && !Auth::user()->hasRole('doctor'))
+            <a href="{{ route('admin.doctors.index') }}" class="{{ request()->routeIs('admin.doctors.*') ? 'active' : '' }}">Doctors</a>
+        @endif
+        
+        <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
         <a href="#">Reports</a>
     </nav>
 

@@ -22,32 +22,24 @@ class PatientController extends Controller
 return view('admin.patients.create');    }
 
     // تخزين مريض جديد
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:patients,email',
-            'phone' => 'nullable|string|max:20',
-            'gender' => 'nullable|in:male,female',
-            'date_of_birth' => 'nullable|date',
-            'address' => 'nullable|string|max:255',
-            'allergies' => 'nullable|string',
-            'chronic_conditions' => 'nullable|string',
-            'current_medications' => 'nullable|string',
-            'previous_dental_history' => 'nullable|string',
-            'last_dental_visit' => 'nullable|date',
-            'current_oral_problems' => 'nullable|string',
-        ]);
+   public function store(Request $request)
+{
+    $data = $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|unique:patients,email',
+        // باقي الحقول
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    $patient = Patient::create($data);
 
-        Patient::create($request->all());
-        
-        return redirect()->route('admin.patients.index')
-            ->with('success', 'تم إنشاء المريض بنجاح');
-    }
+    // ربط المريض بالدكتور الحالي
+    $patient->doctors()->attach(auth()->user()->doctor->id);
+
+    return redirect()
+        ->route('doctor.patients.index')
+        ->with('success', 'Patient added successfully');
+}
+
 
     // عرض مريض واحد
     public function show($id)

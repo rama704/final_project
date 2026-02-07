@@ -24,9 +24,12 @@ class PatientController extends Controller
 
     // صفحة إنشاء مريض جديد
     public function create()
-    {
-        return view('patients.create');
-    }
+{
+    return view('patients.layouts.form', [
+        'action' => route('admin.patients.store'),
+        'method' => 'POST'
+    ]);
+}
 
     // حفظ مريض جديد
     public function store(Request $request)

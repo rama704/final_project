@@ -36,26 +36,23 @@ class DashboardController extends Controller
                 ->limit(3)
                 ->get();
 
-        } elseif ($user->role === 'doctor') {
-            // إحصائيات للـ Doctor
-            $stats = [
-                'patients' => $user->doctor->patients()->count(), // جميع المرضى المرتبطين بالدوكتور
-                'appointments' => $user->doctor->appointments()->count(),
-            ];
+        }  elseif ($user->role === 'doctor') {
+    $doctor = $user->doctor; // جلب العلاقة مرة وحدة
 
-            // آخر 3 مواعيد للدوكتور فقط
-            $appointments = $user->doctor->appointments()
-                ->with('patient')
-                ->latest()
-                ->limit(3)
-                ->get();
+    $stats = [
+        'patients' => $doctor ? $doctor->patients()->count() : 0,
+        'appointments' => $doctor ? $doctor->appointments()->count() : 0,
+    ];
 
-            // آخر 3 مرضى مرتبطين بالدوكتور
-            $recentPatients = $user->doctor->patients()
-                ->latest()
-                ->limit(3)
-                ->get();
-        }
+    $appointments = $doctor
+        ? $doctor->appointments()->with('patient')->latest()->limit(3)->get()
+        : collect();
+
+    $recentPatients = $doctor
+        ? $doctor->patients()->latest()->limit(3)->get()
+        : collect();
+}
+
 
         return view('admin.dashboard', compact('stats', 'appointments', 'recentPatients', 'user'));
     }

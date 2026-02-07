@@ -50,7 +50,10 @@ class Doctor extends Model
     {
         return $this->belongsTo(Clinic::class);
     }
-
+public function patients()
+{
+    return $this->hasMany(Patient::class);
+}
     /**
      * العلاقة مع Appointments
      */
